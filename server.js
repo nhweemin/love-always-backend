@@ -13,6 +13,7 @@ const app = express();
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const songRoutes = require('./routes/songs');
+const setupRoutes = require('./routes/setup');
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/love-always')
@@ -61,6 +62,7 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/songs', songRoutes);
+app.use('/api/setup', setupRoutes);
 
 // Basic route
 app.get('/', (req, res) => {

@@ -93,8 +93,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true // Adds createdAt and updatedAt
 });
 
-// Index for better query performance
-userSchema.index({ email: 1 });
+// Index for better query performance (email index is auto-created by unique: true)
 userSchema.index({ role: 1 });
 userSchema.index({ 'stats.lastLogin': -1 });
 

@@ -21,8 +21,8 @@ const registerValidation = [
     .withMessage('Password must be at least 6 characters long'),
   body('role')
     .optional()
-    .isIn(['senior', 'contributor'])
-    .withMessage('Role must be either "senior" or "contributor"')
+    .isIn(['senior', 'contributor', 'admin'])
+    .withMessage('Role must be either "senior", "contributor", or "admin"')
 ];
 
 const loginValidation = [

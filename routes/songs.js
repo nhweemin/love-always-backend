@@ -247,6 +247,33 @@ router.get('/recent', optionalAuth, async (req, res) => {
   }
 });
 
+// @route   GET /api/songs/user/:userId
+// @desc    Get songs uploaded by a specific user
+// @access  Public
+router.get('/user/:userId', optionalAuth, async (req, res) => {
+  try {
+    const songs = await Song.find({
+      uploadedBy: req.params.userId,
+      status: 'approved',
+      isActive: true
+    })
+    .populate('uploadedBy', 'name')
+    .sort({ createdAt: -1 });
+
+    res.json({
+      message: 'User songs retrieved successfully',
+      data: { songs }
+    });
+
+  } catch (error) {
+    console.error('User songs retrieval error:', error);
+    res.status(500).json({
+      error: 'User songs retrieval failed',
+      message: 'An error occurred while retrieving user songs'
+    });
+  }
+});
+
 // @route   GET /api/songs/:id
 // @desc    Get single song by ID
 // @access  Public
@@ -466,33 +493,6 @@ router.post('/:id/rate', authenticate, [
     res.status(500).json({
       error: 'Song rating failed',
       message: 'An error occurred while rating the song'
-    });
-  }
-});
-
-// @route   GET /api/songs/user/:userId
-// @desc    Get songs uploaded by a specific user
-// @access  Public
-router.get('/user/:userId', optionalAuth, async (req, res) => {
-  try {
-    const songs = await Song.find({
-      uploadedBy: req.params.userId,
-      status: 'approved',
-      isActive: true
-    })
-    .populate('uploadedBy', 'name')
-    .sort({ createdAt: -1 });
-
-    res.json({
-      message: 'User songs retrieved successfully',
-      data: { songs }
-    });
-
-  } catch (error) {
-    console.error('User songs retrieval error:', error);
-    res.status(500).json({
-      error: 'User songs retrieval failed',
-      message: 'An error occurred while retrieving user songs'
     });
   }
 });
